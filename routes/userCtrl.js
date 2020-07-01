@@ -23,6 +23,10 @@ module.exports = {
             return res.status(400).json({ 'error': 'missing parameters' });
           }
 
+        //   if (first_name !=   ) {
+        //     return res.status(400).json({ 'error': 'string please' });
+        //   }
+
         if (!EMAIL_REGEX.test(email)) {
             return res.status(400).json({ 'error': 'email is not valid' });
           }
@@ -49,7 +53,10 @@ module.exports = {
                 })
         .then(function(newUser){
             return res.status(200).json({
-                'userId' : newUser.id
+                'email' : newUser.email,
+                'first_name' : newUser.first_name,
+                'last_name' : newUser.last_name,
+                'role' : newUser.role,
         })
         })
         .catch(function(err){
@@ -82,7 +89,10 @@ module.exports = {
                 bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt){
                     if(resBycrypt){
                         return res.status(200).json({
-                            'userId' : userFound.id,
+                            'user' : {'email' : userFound.email,
+                            'first_name' : userFound.first_name,
+                            'last_name' : userFound.last_name,
+                            'role' : userFound.role},
                             'token' : jwtUtils.generateTokenForUser(userFound)
                         });
                     } else {
