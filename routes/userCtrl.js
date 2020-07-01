@@ -4,15 +4,17 @@ const jwtUtils = require ('../utils/jwt.utils')
 
 const EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_REGEX  = /^(?=.*\d).{4,8}$/;
+const FIRSTNAME_REGEX = /^[a-zA-Z]{1,}$/;
 
 module.exports = {
     signup : function(req, res){
 
-        const email = req.body.email;
-        const first_name = req.body.first_name;
-        const last_name = req.body.last_name;
-        const password = req.body.password;
-        const role = req.body.role;
+        // const email = req.body.email;
+        // const first_name = req.body.first_name;
+        // const last_name = req.body.last_name;
+        // const password = req.body.password;
+        // const role = req.body.role;
+        const {email, first_name, last_name, password, role} = req.body;
         console.log("email " + req.body.email)
         console.log("role " + req.body.role)
         console.log("password " + req.body.password)
@@ -21,11 +23,7 @@ module.exports = {
 
         if (first_name == null || last_name == null ) {
             return res.status(400).json({ 'error': 'missing parameters' });
-          }
-
-        //   if (first_name !=   ) {
-        //     return res.status(400).json({ 'error': 'string please' });
-        //   }
+        }
 
         if (!EMAIL_REGEX.test(email)) {
             return res.status(400).json({ 'error': 'email is not valid' });
@@ -35,6 +33,10 @@ module.exports = {
             return res.status(400).json({ 'error': 'password invalid (must length 4 - 8 and include 1 number at least)' });
         }
 
+        if (!FIRSTNAME_REGEX.test(first_name)) {
+            return res.status(400).json({ 'error': 'il faut une chaine de caractères' });
+        }
+        
         models.User.findOne({
             attributes: ['email'],
             where: { email : email }

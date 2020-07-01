@@ -6,13 +6,13 @@ module.exports = (sequelize, DataTypes) => {
   class City extends Model {
     
     // VOIR SI LASSOCIATION EST CORRECTE
-    static associate(models) {
-      this.belongsTo(models.Place, {
-        foreignKey: {
-          allowNull: false
-        }
-      })
-    }
+    // static associate(models) {
+    //   this.belongsTo(models.Place, {
+    //     foreignKey: {
+    //       allowNull: false
+    //     }
+    //   })
+    // }
   };
   City.init({
     name: DataTypes.STRING
