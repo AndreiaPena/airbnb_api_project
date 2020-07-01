@@ -5,6 +5,7 @@ exports.router = (function() {
     const apiRouter = express.Router();
 
  apiRouter.route('/signup').post(userCtrl.signup);
+ apiRouter.route('/signin').post(userCtrl.signin);
 
  return apiRouter;
 })();

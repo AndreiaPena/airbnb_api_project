@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const models = require('../models');
+const jwtUtils = require ('../utils/jwt.utils')
 
 const EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_REGEX  = /^(?=.*\d).{4,8}$/;
@@ -18,8 +19,8 @@ module.exports = {
         console.log("fn " + req.body.first_name)
         console.log("ln " + req.body.last_name)
 
-        if (first_name == null || first_name == undefined ) {
-            return res.status(400).json({ 'error': 'missing first_name' });
+        if (first_name == null || last_name == null ) {
+            return res.status(400).json({ 'error': 'missing parameters' });
           }
 
         if (!EMAIL_REGEX.test(email)) {
@@ -31,19 +32,20 @@ module.exports = {
         }
 
         models.User.findOne({
-            attributes : ['email'],
+            attributes: ['email'],
             where: { email : email }
         })
         .then(function(userFound){
-            if(!userFound){
-                bcrypt.hash(password, 5, function(err, bcryptedPassword){
+            if(!userFound) {
+
+                bcrypt.hash(password, 5, function( err, bcryptedPassword ){
                 const newUser = models.User.create({
-                    email : email,
-                    first_name : first_name,
-                    last_name : last_name,
-                    password : bcryptedPassword,
-                    role : role 
-                 })
+                    email: email,
+                    first_name: first_name,
+                    last_name: last_name,
+                    password: bcryptedPassword,
+                    role: role 
+                
                 })
         .then(function(newUser){
             return res.status(200).json({
@@ -52,7 +54,8 @@ module.exports = {
         })
         .catch(function(err){
             return res.status(500).json({ 'error' : 'cannot add user'})
-        })
+        });
+    });
         } else {
             return res.status(409).json({ 'error' : 'user already exist'})
         }
@@ -62,5 +65,36 @@ module.exports = {
         })
 
     
+    },
+    signin : function(req, res){
+        const email = req.body.email;
+        const password = req.body.password;
+
+        if (email == null || password == null ) {
+            return res.status(400).json({ 'error': 'missing parameters' });
+          }
+
+          models.User.findOne({
+            where: { email : email }
+        })
+        .then(function(userFound){
+            if(userFound){
+                bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt){
+                    if(resBycrypt){
+                        return res.status(200).json({
+                            'userId' : userFound.id,
+                            'token' : jwtUtils.generateTokenForUser(userFound)
+                        });
+                    } else {
+                        return res.status(403).json({ 'error' : 'invalid password'});
+                    }
+                });
+            } else {
+                return res.status(400).json({ 'error' : 'user not exist in DB airbnb_api'})
+            }
+        })
+        .catch(function(err){
+            return res.status(500).json({ 'error' : 'unable to verify user'})
+        })
     }
 }
