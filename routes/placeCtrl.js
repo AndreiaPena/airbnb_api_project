@@ -12,27 +12,25 @@ module.exports = {
         const price_by_night = req.body.price_by_night;
         const max_guests = req.body.max_guests;
 
-        var headerAuth  = req.headers['authorization'];
-        var userId      = jwtUtils.getUserId(headerAuth);
-
-        if (userId < 0)
-            return res.status(400).json({ 'error': 'wrong token' });
-
-        models.User.findOne({
-            attributes: [ 'id', 'role' ],
-            where: { id: userId }
-        }).then(function(user) {
-            if( role ='tourist'){
-                res.status(400).json({ 'error' : "vous n'avez pas l'autorisation d'accéder à cette page"
+        models.Place.findAll({
+            where:{id:idCITIES}, 
+            include:[
+                { model:City,
+                  where:{ 
+                        id:1},   
+                  required:false
+                  }
+                ]
+             })
+                const newUser = models.Place.create({
+                     idCITIES : idCITIES,
+                     name : name,
+                     description : description,
+                     rooms : rooms,
+                     bathrooms : bathrooms,
+                     price_by_night : price_by_night,
+                     max_guests : max_guests
+                
                 })
-            }
-        if (user) {
-            res.status(201).json(user);
-        } else {
-            res.status(404).json({ 'error': 'user not found' });
-        }
-        }).catch(function(err) {
-            res.status(500).json({ 'error': 'cannot fetch user' });
-        });
     }
 };

@@ -9,7 +9,7 @@ exports.router = (function() {
  apiRouter.route('/signup').post(userCtrl.signup);
  apiRouter.route('/signin').post(userCtrl.signin);
 //  apiRouter.route('/admin').post(cityCtrl.addCity);
-apiRouter.route('/admin').post(cityCtrl.addCity);
+//  apiRouter.route('/cities').get(cityCtrl.viewCity);
  apiRouter.route('/place').post(placeCtrl.addPlace);
 
 

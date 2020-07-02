@@ -1,6 +1,5 @@
 'use strict';
 
-
 const villes = require('../seeds/Cities')
 
 module.exports = {

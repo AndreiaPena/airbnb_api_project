@@ -7,10 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     
   
     static associate(models) {
-      this.belongsTo(models.Place, {
-        foreignKey: {
-          allowNull: false
-        }
+      this.hasMany(models.Place, {
+        foreignKey: "id"
       })
     }
   };
