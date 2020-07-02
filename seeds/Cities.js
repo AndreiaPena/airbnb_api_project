@@ -2,63 +2,93 @@ module.exports = () => {
     return [
         {
           "id": 1,
-          "name": "Paris"
+          "name": "Paris",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 2,
-          "name": "Dijon"
+          "name": "Dijon",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 3,
-          "name": "Rennes"
+          "name": "Rennes",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 4,
-          "name": "Bordeaux"
+          "name": "Bordeaux",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 5,
-          "name": "Marseille"
+          "name": "Marseille",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 6,
-          "name": "Montpellier"
+          "name": "Montpellier",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 7,
-          "name": "Strasbourg"
+          "name": "Strasbourg",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 8,
-          "name": "Lille"
+          "name": "Lille",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 9,
-          "name": "Lyon"
+          "name": "Lyon",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 10,
-          "name": "Nice"
+          "name": "Nice",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 11,
-          "name": "Saint-Etienne"
+          "name": "Saint-Etienne",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 12,
-          "name": "Nantes"
+          "name": "Nantes",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 13,
-          "name": "Toulouse"
+          "name": "Toulouse",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 14,
-          "name": "Brest"
+          "name": "Brest",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         },
         {
           "id": 15,
-          "name": "Metz"
+          "name": "Metz",
+          createdAt: '2020-06-30',
+          updatedAt: '2020-06-30'
         }
       ]
       ;
