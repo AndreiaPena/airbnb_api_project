@@ -3,17 +3,16 @@ const jwtUtils = require('../utils/jwt.utils');
 
 module.exports = {
   addPlace: function (req, res) {
-    // const idCITIES = req.body.idCITIES;
-    // const name = req.body.name;
-    // const description = req.body.description;
-    // const rooms = req.body.rooms;
-    // const bathrooms = req.body.bathrooms;
-    // const price_by_night = req.body.price_by_night;
-    // const max_guests = req.body.max_guests;
+
+    var headerAuth  = req.headers['authorization'];
+    var userId      = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0)
+      return res.status(400).json({ 'error': "connectez-vous avant d'ajouter une place" });
 
     const { idCITIES, name, description, rooms, bathrooms, price_by_night, max_guests } = req.body;
 
-    const tutu = models.Place.findOne({
+    const findInformationsfromCity = models.Place.findOne({
       include: [
         {
           model: models.City,
@@ -24,7 +23,7 @@ module.exports = {
       ],
     })
       .then(function (PlaceFound) {
-        console.log('ICI     ' + PlaceFound.City.dataValues.name);
+        console.log('La ville:    ' + PlaceFound.City.dataValues.name);
 
         models.Place.create({
           idCITIES: idCITIES,
