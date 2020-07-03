@@ -10,7 +10,7 @@ exports.router = (function() {
  apiRouter.route('/signin').post(userCtrl.signin);
 //  apiRouter.route('/admin').post(cityCtrl.addCity);
 //  apiRouter.route('/cities').get(cityCtrl.viewCity);
- apiRouter.route('/place').post(placeCtrl.addPlace);
+ apiRouter.route('/places').post(placeCtrl.addPlace);
 
 
 
