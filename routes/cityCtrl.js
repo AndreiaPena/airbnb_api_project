@@ -6,4 +6,7 @@ module.exports = {
     const newCity = models.City.create(data);
     res.json(data);
   },
+  viewCity : function (req, res) {
+    
+  }
 };

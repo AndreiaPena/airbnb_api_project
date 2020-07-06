@@ -8,9 +8,9 @@ exports.router = (function() {
 
  apiRouter.route('/signup').post(userCtrl.signup);
  apiRouter.route('/signin').post(userCtrl.signin);
-//  apiRouter.route('/admin').post(cityCtrl.addCity);
-//  apiRouter.route('/cities').get(cityCtrl.viewCity);
+//  apiRouter.route('/cities').get(cityCtrl.viewCity);  penser à finir la route get de cities
  apiRouter.route('/places').post(placeCtrl.addPlace);
+ apiRouter.route('/places').get(placeCtrl.sharePlace);
 
 
 
