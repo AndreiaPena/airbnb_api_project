@@ -1,42 +1,36 @@
 const models = require('../models');
+const Place = models.Place;
+const City = models.City;
 const jwtUtils = require('../utils/jwt.utils');
 const NOSTRING_REGEX = /^\d+$/;
 
 module.exports = {
-  addPlace: function (req, res) {
-
-    var headerAuth  = req.headers['authorization'];
-    var userId      = jwtUtils.getUserId(headerAuth);
-    var userRole      = jwtUtils.getUserRole(headerAuth);
+  addPlace: function  (req, res) {
+    var headerAuth = req.headers['authorization'];
+    var userId = jwtUtils.getUserId(headerAuth);
+    
 
     if (userId < 0)
-      return res.status(401).json({ error: "Vous devez être connecté pour accéder à cette ressource" });
-      if (userRole  < 0)
-      return res.status(403).json({ error: "Vous n'êtes pas autorisé à accéder à cette ressource" });
-
+      return res.status(401).json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
+    
     const { idCITIES, name, description, rooms, bathrooms, price_by_night, max_guests } = req.body;
 
-    if (description == null || description  == undefined) {
+    if (description == null || description == undefined) {
       return res.status(400).json({ error: "Le champ description n'est pas renseigné" });
     }
-    if (!NOSTRING_REGEX.test(rooms) || !NOSTRING_REGEX.test(bathrooms) || !NOSTRING_REGEX.test(max_guests) ) {
+    if (
+      !NOSTRING_REGEX.test(rooms) ||
+      !NOSTRING_REGEX.test(bathrooms) ||
+      !NOSTRING_REGEX.test(max_guests)
+    ) {
       return res.status(400).json({ error: 'Le champ doit être un nombre entier' });
     }
 
-    const findInformationsfromCity = models.Place.findOne({
-      include: [
-        {
-          model: models.City,
-          where: {
-            id: idCITIES,
-          },
-        },
-      ],
-    })
-      .then(function (PlaceFound) {
-        console.log('La ville:    ' + PlaceFound.City.dataValues.name);
+    Place.findOne({ where: { id: idCITIES }, include: City })
+    .then(function (PlaceFound) {
+      console.log(PlaceFound.City.dataValues.name)
 
-        models.Place.create({
+        Place.create({
           idCITIES: idCITIES,
           name: name,
           description: description,
@@ -47,7 +41,7 @@ module.exports = {
         });
 
         return res.status(200).json({
-          city: PlaceFound.City.name,
+          city: PlaceFound.City.dataValues.name,
           name: PlaceFound.name,
           description: PlaceFound.description,
           rooms: PlaceFound.rooms,
@@ -57,27 +51,32 @@ module.exports = {
         });
       })
       .catch(function (err) {
+        console.log(err)
         return res.status(500).json({ error: 'cannot add place' });
       });
   },
   sharePlace : function (req, res){
-    models.Place.findAll({
-      attributes: [ 'id', 
-      'name', 
-      'idCITIES', 
-      'description', 
-      'rooms', 
-      'bathrooms',
-      'price_by_night',
-      'max_guests' ]
-    }).then(function(user) {
-      if (user) {
-        res.status(201).json(user);
-      } else {
-        res.status(404).json({ 'error': 'user not found' });
-      }
-    }).catch(function(err) {
-      res.status(500).json({ 'error': 'cannot fetch user' });
-    });
+
+    // Place.findAll({
+    //   include: [
+    //     {
+    //       model: City,
+    //       attributes: ['name'],
+    //     },
+    //   ],
+    //   raw: true,
+    //   attributes: [
+    //     'id',
+    //     'name',
+    //     'description',
+    //     'rooms',
+    //     'bathrooms',
+    //     'max_guests',
+    //     'price_by_night',
+    //   ],
+    // })
+    // .then(function (test) {
+    //   return res.status(200).json(test);
+    // })
   }
-};
+}

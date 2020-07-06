@@ -9,11 +9,6 @@ const FIRSTNAME_REGEX = /^[a-zA-Z]{1,}$/
 module.exports = {
   signup: function (req, res) {
     const { email, first_name, last_name, password, role } = req.body;
-    console.log('email ' + req.body.email);
-    console.log('role ' + req.body.role);
-    console.log('password ' + req.body.password);
-    console.log('fn ' + req.body.first_name);
-    console.log('ln ' + req.body.last_name);
 
     if (first_name == null || last_name == null) {
       return res.status(400).json({ error: 'missing parameters' });

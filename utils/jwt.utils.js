@@ -6,7 +6,6 @@ module.exports = {
     return jwt.sign(
       {
         userId: userData.id,
-        userRole: userData.role,
       },
       JWT_SIGN_SECRET,
       {
@@ -27,16 +26,5 @@ module.exports = {
       } catch (err) {}
     }
     return userId;
-  },
-  getUserRole: function (authorization) {
-    var userRole = -1;
-    var token = module.exports.parseAuthorization(authorization);
-    if (token != null) {
-      try {
-        var jwtToken = jwt.verify(token, JWT_SIGN_SECRET);
-        if (jwtToken != null) userRole = jwtToken.userRole;
-      } catch (err) {}
-    }
-    return userRole;
-  },
+  }
 };
