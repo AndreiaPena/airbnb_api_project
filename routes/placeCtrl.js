@@ -83,4 +83,43 @@ module.exports = {
     });
     return res.status(201).json(placeOne);
   },
+  getUpdatePlace: async function (req, res) {
+    const { id } = req.params;
+    const newData = req.body;
+    await Place.findOne({ where: { id: id } }).then((place) => {
+      place.update(newData).then((newData) => {
+        res.json(newData);
+      });
+    });
+  },
+  // updatePlace: async (req, res) => {
+  //   const { id } = req.params;
+  //   // const updatePlaces = req.body;
+  //   const placeOne = await Place.findByPk(id, {
+  //     include: [
+  //       {
+  //         model: City,
+  //         attributes: ['name'],
+
+  //       },
+  //     ],
+
+  //   //   attributes: [
+  //   //     'id',
+  //   //     'name',
+  //   //     'description',
+  //   //     'rooms',
+  //   //     'bathrooms',
+  //   //     'max_guests',
+  //   //     'price_by_night',
+  //   //   ],
+  //   // }).then(function (test) {
+  //   //   return res.status(200).json(test);
+
+  //   });
+
+  // updateAttributes();
+
+  //   return res.status(201).json( placeOne);
+  // },
 };

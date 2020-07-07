@@ -13,6 +13,7 @@ exports.router = (function() {
  apiRouter.route('/places').post(placeCtrl.addPlace);
  apiRouter.route('/places').get(placeCtrl.getAllPlaces);
  apiRouter.route('/places/:id').get(placeCtrl.getOnePlace);
+ apiRouter.route('/places/:id').patch(placeCtrl.getUpdatePlace);
   
 
 

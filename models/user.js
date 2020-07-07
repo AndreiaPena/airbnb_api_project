@@ -5,9 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     // static associate(models) {
     //   this.hasMany(models.Place, {
     //     foreignKey: {
-    //       allowNull: false
-    //     }
-    //   })
+    //       allowNull: false,
+    //     },
+    //   });
     // }
   }
   User.init(
