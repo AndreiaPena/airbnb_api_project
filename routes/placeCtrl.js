@@ -48,7 +48,6 @@ module.exports = {
       max_guests,
       price_by_night,
     });
-    
   },
   getAllPlaces: function (req, res) {
     Place.findAll({
@@ -71,5 +70,17 @@ module.exports = {
     }).then(function (test) {
       return res.status(200).json(test);
     });
+  },
+  getOnePlace: async (req, res) => {
+    const { id } = req.params;
+    const placeOne = await Place.findByPk(id, {
+      include: [
+        {
+          model: City,
+          attributes: ['name'],
+        },
+      ],
+    });
+    return res.status(201).json(placeOne);
   },
 };
