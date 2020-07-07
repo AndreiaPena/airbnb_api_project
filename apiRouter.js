@@ -10,7 +10,7 @@ exports.router = (function() {
  apiRouter.route('/signin').post(userCtrl.signin);
 //  apiRouter.route('/cities').get(cityCtrl.viewCity);  penser à finir la route get de cities
  apiRouter.route('/places').post(placeCtrl.addPlace);
- apiRouter.route('/places').get(placeCtrl.sharePlace);
+ apiRouter.route('/places').get(placeCtrl.getAllPlaces);
 
 
 
