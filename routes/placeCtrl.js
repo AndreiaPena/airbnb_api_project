@@ -92,34 +92,16 @@ module.exports = {
       });
     });
   },
-  // updatePlace: async (req, res) => {
-  //   const { id } = req.params;
-  //   // const updatePlaces = req.body;
-  //   const placeOne = await Place.findByPk(id, {
-  //     include: [
-  //       {
-  //         model: City,
-  //         attributes: ['name'],
+  getDeletePlace: async function (req, res) {
+    const { id } = req.params
 
-  //       },
-  //     ],
+    await Place.destroy({
+      where: { id: id }
+    })
+      .then(() => {
+        res.send('Place Effacé')
+      })
 
-  //   //   attributes: [
-  //   //     'id',
-  //   //     'name',
-  //   //     'description',
-  //   //     'rooms',
-  //   //     'bathrooms',
-  //   //     'max_guests',
-  //   //     'price_by_night',
-  //   //   ],
-  //   // }).then(function (test) {
-  //   //   return res.status(200).json(test);
-
-  //   });
-
-  // updateAttributes();
-
-  //   return res.status(201).json( placeOne);
-  // },
+  }
+  
 };

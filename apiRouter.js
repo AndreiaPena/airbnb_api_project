@@ -14,6 +14,7 @@ exports.router = (function() {
  apiRouter.route('/places').get(placeCtrl.getAllPlaces);
  apiRouter.route('/places/:id').get(placeCtrl.getOnePlace);
  apiRouter.route('/places/:id').patch(placeCtrl.getUpdatePlace);
+ apiRouter.route('/places/:id').delete(placeCtrl.getDeletePlace);
   
 
 
