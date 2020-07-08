@@ -49,8 +49,18 @@ module.exports = {
       price_by_night,
     });
   },
-  getAllPlaces: function (req, res) {
-    Place.findAll({
+  
+  getAllPlaces: async function (req, res) {
+    const where = {};
+    if (req.query.city) {
+      const cityFound = await City.findOne({
+        where: { name: req.query.city },
+        attributes: ['id'],
+        raw: true,
+      });
+      where.idCITIES = cityFound.id;
+    }
+    const findPlaces = await Place.findAll({
       include: [
         {
           model: City,
@@ -67,9 +77,9 @@ module.exports = {
         'max_guests',
         'price_by_night',
       ],
-    }).then(function (test) {
-      return res.status(200).json(test);
+      where,
     });
+    return res.status(201).json(findPlaces);
   },
   getOnePlace: async (req, res) => {
     const { id } = req.params;
@@ -102,6 +112,5 @@ module.exports = {
         res.send('Place Effacé')
       })
 
-  }
-  
+  },
 };
