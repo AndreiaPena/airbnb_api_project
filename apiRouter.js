@@ -11,6 +11,7 @@ exports.router = (function () {
   apiRouter.route('/signin').post(userCtrl.signin);
 
   apiRouter.route('/bookings').post(bookingCtrl.addBooking);
+  apiRouter.route('/bookings').get(bookingCtrl.getBookings);
 
   apiRouter.route('/places').post(placeCtrl.addPlace);
 

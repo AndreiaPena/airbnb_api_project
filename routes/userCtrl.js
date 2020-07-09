@@ -63,8 +63,7 @@ module.exports = {
       });
   },
   signin: function (req, res) {
-    const email = req.body.email;
-    const password = req.body.password;
+    const { email, password } = req.body;
 
     if (email == null || password == null) {
       return res.status(400).json({ error: 'missing parameters' });
