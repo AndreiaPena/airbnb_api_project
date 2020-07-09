@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Place.init(
     {
+      idUSERS: DataTypes.INTEGER,
       idCITIES: DataTypes.INTEGER,
-      // idUSERS: DataTypes.INTEGER,
       name: DataTypes.STRING,
       description: DataTypes.STRING,
       rooms: DataTypes.INTEGER,
