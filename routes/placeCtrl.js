@@ -1,6 +1,7 @@
 const models = require('../models');
 const Place = models.Place;
 const City = models.City;
+const User = models.User;
 const jwtUtils = require('../utils/jwt.utils');
 const NOSTRING_REGEX = /^\d+$/;
 
@@ -28,28 +29,33 @@ module.exports = {
     }
 
     const city = await City.findByPk(idCITIES);
+    const user = await User.findByPk(userId);
 
     const place = await Place.create({
       idCITIES,
+      userId,
       name,
       description,
       rooms,
       bathrooms,
       max_guests,
       price_by_night,
+      pictures,
     });
 
     return res.status(200).json({
       city: city.name,
+      user: user.id,
       name,
       description,
       rooms,
       bathrooms,
       max_guests,
       price_by_night,
+      pictures,
     });
   },
-  
+
   getAllPlaces: async function (req, res) {
     const where = {};
     if (req.query.city) {
@@ -66,6 +72,7 @@ module.exports = {
           model: City,
           attributes: ['name'],
         },
+        { model: User, attributes: ['id'] },
       ],
       raw: true,
       attributes: [
@@ -76,11 +83,13 @@ module.exports = {
         'bathrooms',
         'max_guests',
         'price_by_night',
+        'pictures',
       ],
       where,
     });
     return res.status(201).json(findPlaces);
   },
+
   getOnePlace: async (req, res) => {
     const { id } = req.params;
     const placeOne = await Place.findByPk(id, {
@@ -88,11 +97,13 @@ module.exports = {
         {
           model: City,
           attributes: ['name'],
-        },
+        }
       ],
+      raw: true
     });
     return res.status(201).json(placeOne);
   },
+
   getUpdatePlace: async function (req, res) {
     const { id } = req.params;
     const newData = req.body;
@@ -102,15 +113,14 @@ module.exports = {
       });
     });
   },
+
   getDeletePlace: async function (req, res) {
-    const { id } = req.params
+    const { id } = req.params;
 
     await Place.destroy({
-      where: { id: id }
-    })
-      .then(() => {
-        res.send('Place Effacé')
-      })
-
+      where: { id: id },
+    }).then(() => {
+      res.send('Place Effacé');
+    });
   },
 };

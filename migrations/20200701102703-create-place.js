@@ -16,14 +16,14 @@ module.exports = {
           key : "id"
         }
       },
-      // idUSERS: {
-      //   allowNull: false,
-      //   type: Sequelize.INTEGER,
-      //   references : {
-      //     model : "Users",
-      //     key : "id"
-      //   }
-      // },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references : {
+          model : "Users",
+          key : "id"
+        }
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING
@@ -47,6 +47,10 @@ module.exports = {
       price_by_night: {
         allowNull: false,
         type: Sequelize.INTEGER
+      },
+      pictures: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
