@@ -2,17 +2,17 @@ const models = require('../models');
 const Place = models.Place;
 const User = models.User;
 const Booking = models.Booking;
-// const error = require('../services/errorBooking')
+const jwtUtils = require('../utils/jwt.utils');
 
 module.exports = {
   addBooking: async function (req, res) {
-    // var headerAuth = req.headers['authorization'];
-    // var userId = jwtUtils.getUserId(headerAuth);
+    var headerAuth = req.headers['authorization'];
+    var userIdAuth = jwtUtils.getUserId(headerAuth);
 
-    // if (userId < 0)
-    //   return res
-    //     .status(401)
-    //     .json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
+    if (userIdAuth < 0)
+      return res
+        .status(401)
+        .json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
 
     const { placeId, userId, check_in, check_out } = req.body;
 
@@ -49,6 +49,7 @@ module.exports = {
       check_out,
     });
   },
+
   getBookings: async (req,res) => {
     const bookingsFound = await Booking.findAll({
       attributes: ['id', 'check_in', 'check_out'],

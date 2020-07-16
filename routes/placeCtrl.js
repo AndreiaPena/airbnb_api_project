@@ -91,6 +91,8 @@ module.exports = {
   },
 
   getOnePlace: async (req, res) => {
+    
+        
     const { id } = req.params;
     const placeOne = await Place.findByPk(id, {
       include: [
