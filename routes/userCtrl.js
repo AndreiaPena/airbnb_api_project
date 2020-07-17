@@ -78,6 +78,7 @@ console.log(req.body)
             if (resBycrypt) {
               return res.status(200).json({
                 user: {
+                  id : userFound.id,
                   email: userFound.email,
                   first_name: userFound.first_name,
                   last_name: userFound.last_name,
