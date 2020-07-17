@@ -15,7 +15,7 @@ module.exports = {
         .status(401)
         .json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
 
-    const { idCITIES, name, description, rooms, bathrooms, price_by_night, max_guests } = req.body;
+    const { cityName, name, description, rooms, bathrooms, price_by_night, max_guests, pictures } = req.body;
 
     if (description === null || description === undefined) {
       return res.status(400).json({ error: "Le champ description n'est pas renseigné" });
@@ -27,12 +27,13 @@ module.exports = {
     ) {
       return res.status(400).json({ error: 'Le champ doit être un nombre entier' });
     }
-
-    const city = await City.findByPk(idCITIES);
+    const city = await City.findOne({ where: { name: cityName } });
+    //vérifier si la ville existe!!!!
+    // const city = await City.findByPk(idCITIES);
     const user = await User.findByPk(userId);
 
     const place = await Place.create({
-      idCITIES,
+      idCITIES: city.id,
       userId,
       name,
       description,

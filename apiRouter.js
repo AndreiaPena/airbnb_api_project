@@ -13,7 +13,7 @@ exports.router = (function () {
   apiRouter.route('/bookings').post(bookingCtrl.addBooking);
   apiRouter.route('/bookings').get(bookingCtrl.getBookings);
 
-  apiRouter.route('/places').post(placeCtrl.addPlace);
+  apiRouter.route('/places').post(placeCtrl.addPlace); 
 
   apiRouter.route('/places').get(placeCtrl.getAllPlaces);
   apiRouter.route('/places/:id').get(placeCtrl.getOnePlace);
