@@ -1,31 +1,52 @@
+const express = require('express');
+require('express-async-errors');
 const models = require('../models');
 const Place = models.Place;
 const City = models.City;
 const User = models.User;
 const jwtUtils = require('../utils/jwt.utils');
 const NOSTRING_REGEX = /^\d+$/;
+const { OK, CREATED } = require('../helpers/status_codes');
+const { BadRequestError, UnauthorizedError } = require('../helpers/errors');
 
 module.exports = {
   addPlace: async function (req, res) {
     var headerAuth = req.headers['authorization'];
     var userId = jwtUtils.getUserId(headerAuth);
 
-    if (userId < 0)
-      return res
-        .status(401)
-        .json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
+    if (userId < 0) {
+      throw new UnauthorizedError(
+        'Non autorisé',
+        'Vous devez être connecté pour accéder à cette ressource.'
+      );
+      // return res
+      // .status(401)
+      // .json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
+    };
 
-    const { cityName, name, description, rooms, bathrooms, price_by_night, max_guests, pictures } = req.body;
+    const {
+      cityName,
+      name,
+      description,
+      rooms,
+      bathrooms,
+      price_by_night,
+      max_guests,
+      pictures,
+    } = req.body;
 
     if (description === null || description === undefined) {
-      return res.status(400).json({ error: "Le champ description n'est pas renseigné" });
+      throw new BadRequestError(
+        'Mauvaise Requête',
+        "Le champ description n'est pas renseigné, veuillez recommencer."
+      );
     }
     if (
       !NOSTRING_REGEX.test(rooms) ||
       !NOSTRING_REGEX.test(bathrooms) ||
       !NOSTRING_REGEX.test(max_guests)
     ) {
-      return res.status(400).json({ error: 'Le champ doit être un nombre entier' });
+      throw new BadRequestError('Mauvaise Requête', 'Le champ doit être un nombre entier.');
     }
     const city = await City.findOne({ where: { name: cityName } });
     //vérifier si la ville existe!!!!
@@ -44,7 +65,7 @@ module.exports = {
       pictures,
     });
 
-    return res.status(200).json({
+    return res.status(OK).json({
       city: city.name,
       user: user.id,
       name,
@@ -88,23 +109,21 @@ module.exports = {
       ],
       where,
     });
-    return res.status(201).json(findPlaces);
+    return res.status(CREATED).json(findPlaces);
   },
 
   getOnePlace: async (req, res) => {
-    
-        
     const { id } = req.params;
     const placeOne = await Place.findByPk(id, {
       include: [
         {
           model: City,
           attributes: ['name'],
-        }
+        },
       ],
-      raw: true
+      raw: true,
     });
-    return res.status(201).json(placeOne);
+    return res.status(CREATED).json(placeOne);
   },
 
   getUpdatePlace: async function (req, res) {

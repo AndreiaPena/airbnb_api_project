@@ -1,8 +1,8 @@
 const express = require('express');
+require('express-async-errors');
 const userCtrl = require('./routes/userCtrl');
 const placeCtrl = require('./routes/placeCtrl');
 const bookingCtrl = require('./routes/bookingCtrl');
-const { request } = require('express');
 
 exports.router = (function () {
   const apiRouter = express.Router();
@@ -13,7 +13,7 @@ exports.router = (function () {
   apiRouter.route('/bookings').post(bookingCtrl.addBooking);
   apiRouter.route('/bookings').get(bookingCtrl.getBookings);
 
-  apiRouter.route('/places').post(placeCtrl.addPlace); 
+  apiRouter.route('/places').post(placeCtrl.addPlace);
 
   apiRouter.route('/places').get(placeCtrl.getAllPlaces);
   apiRouter.route('/places/:id').get(placeCtrl.getOnePlace);
