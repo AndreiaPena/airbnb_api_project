@@ -10,8 +10,8 @@ const { OK, CREATED } = require('../helpers/status_codes');
 const { BadRequestError, UnauthorizedError } = require('../helpers/errors');
 
 module.exports = {
-  addPlace: async function (req, res) {
-    var headerAuth = req.headers['authorization'];
+  addPlace: async (request, response) => {
+    var headerAuth = request.headers['authorization'];
     var userId = jwtUtils.getUserId(headerAuth);
 
     if (userId < 0) {
@@ -19,9 +19,6 @@ module.exports = {
         'Non autorisé',
         'Vous devez être connecté pour accéder à cette ressource.'
       );
-      // return res
-      // .status(401)
-      // .json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
     };
 
     const {
@@ -33,7 +30,7 @@ module.exports = {
       price_by_night,
       max_guests,
       pictures,
-    } = req.body;
+    } = request.body;
 
     if (description === null || description === undefined) {
       throw new BadRequestError(
@@ -65,7 +62,7 @@ module.exports = {
       pictures,
     });
 
-    return res.status(OK).json({
+    return response.status(OK).json({
       city: city.name,
       user: user.id,
       name,
@@ -78,11 +75,11 @@ module.exports = {
     });
   },
 
-  getAllPlaces: async function (req, res) {
+  getAllPlaces: async (request, response) => {
     const where = {};
-    if (req.query.city) {
+    if (request.query.city) {
       const cityFound = await City.findOne({
-        where: { name: req.query.city },
+        where: { name: request.query.city },
         attributes: ['id'],
         raw: true,
       });
@@ -109,11 +106,11 @@ module.exports = {
       ],
       where,
     });
-    return res.status(CREATED).json(findPlaces);
+    return response.status(CREATED).json(findPlaces);
   },
 
-  getOnePlace: async (req, res) => {
-    const { id } = req.params;
+  getOnePlace: async (request, response) => {
+    const { id } = request.params;
     const placeOne = await Place.findByPk(id, {
       include: [
         {
@@ -123,26 +120,26 @@ module.exports = {
       ],
       raw: true,
     });
-    return res.status(CREATED).json(placeOne);
+    return response.status(CREATED).json(placeOne);
   },
 
-  getUpdatePlace: async function (req, res) {
-    const { id } = req.params;
-    const newData = req.body;
+  getUpdatePlace: async function (request, response) {
+    const { id } = request.params;
+    const newData = request.body;
     await Place.findOne({ where: { id: id } }).then((place) => {
       place.update(newData).then((newData) => {
-        res.json(newData);
+        response.json(newData);
       });
     });
   },
 
-  getDeletePlace: async function (req, res) {
-    const { id } = req.params;
+  getDeletePlace: async (request, response) => {
+    const { id } = request.params;
 
     await Place.destroy({
       where: { id: id },
     }).then(() => {
-      res.send('Place Effacé');
+      response.send('Place Effacé');
     });
   },
 };

@@ -1,12 +1,12 @@
 const models = require('../models');
 
 module.exports = {
-  addCity: function (req, res) {
+  addCity: function (request, response) {
     const data = require('../seeds/Cities')()[13];
     const newCity = models.City.create(data);
-    res.json(data);
+    response.json(data);
   },
-  viewCity : function (req, res) {
+  viewCity : function (request, response) {
     
   }
 };

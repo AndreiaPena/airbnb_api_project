@@ -7,8 +7,8 @@ const { OK, CREATED} = require('../helpers/status_codes');
 const { UnauthorizedError } = require('../helpers/errors');
 
 module.exports = {
-  addBooking: async function (req, res) {
-    var headerAuth = req.headers['authorization'];
+  addBooking: async (request, response) => {
+    var headerAuth = request.headers['authorization'];
     var userIdAuth = jwtUtils.getUserId(headerAuth);
 
     if (userIdAuth < 0) {
@@ -18,7 +18,7 @@ module.exports = {
       );
     }
 
-    const { placeId, userId, check_in, check_out } = req.body;
+    const { placeId, userId, check_in, check_out } = request.body;
 
     const place = await Place.findByPk(placeId);
     const user = await User.findByPk(userId);
@@ -31,7 +31,7 @@ module.exports = {
       check_out,
     });
 
-    return res.status(OK).json({
+    return response.status(OK).json({
       user: {
         id: user.id,
         first_name: user.first_name,
@@ -52,7 +52,7 @@ module.exports = {
     });
   },
 
-  getBookings: async (req, res) => {
+  getBookings: async (request, response) => {
     const bookingsFound = await Booking.findAll({
       attributes: ['id', 'check_in', 'check_out'],
       where: {
@@ -81,6 +81,6 @@ module.exports = {
       raw: true,
       order: [['check_in', 'DESC']],
     });
-    res.status(CREATED).json(bookingsFound);
+    response.status(CREATED).json(bookingsFound);
   },
 };
