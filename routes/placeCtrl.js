@@ -32,12 +32,13 @@ module.exports = {
       pictures,
     } = request.body;
 
-    if (description === null || description === undefined) {
+    if (description === null || description === undefined || description === '') {
       throw new BadRequestError(
         'Mauvaise Requête',
         "Le champ description n'est pas renseigné, veuillez recommencer."
       );
-    }
+    }; 
+
     if (
       !NOSTRING_REGEX.test(rooms) ||
       !NOSTRING_REGEX.test(bathrooms) ||
@@ -45,6 +46,7 @@ module.exports = {
     ) {
       throw new BadRequestError('Mauvaise Requête', 'Le champ doit être un nombre entier.');
     }
+    
     const city = await City.findOne({ where: { name: cityName } });
     //vérifier si la ville existe!!!!
     // const city = await City.findByPk(idCITIES);
